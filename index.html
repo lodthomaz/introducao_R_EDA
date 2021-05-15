@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introdução ao R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Letícia Thomaz" />
+    <link rel="stylesheet" href="template/default.css" type="text/css" />
+    <link rel="stylesheet" href="template/rlet.css" type="text/css" />
+    <link rel="stylesheet" href="template/rlet-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introdução ao R
+## + Análise Exploratória de Dados
+### Letícia Thomaz
+
+---
+
+
+# O que é o R?
+
+- O R é uma linguagem de programação e também um software livre
+
+- Fornece uma grande variedade de técnicas estatísticas e técnicas para visualização gráfica
+
+- É altamente **extensível**
+
+- Além de todas as funções que já são implementadas de forma nativa, você também pode usar os **pacotes** do R que são criados pela comunidade.
+
+.center[![:scale 70%](./Imagens/print_r.png)]
+
+---
+
+# RStudio
+
+RStudio é um software livre de ambiente de desenvolvimento integrado para **R**.
+
+.center[![:scale 100%](./Imagens/print_RStudio.png)]
+
+---
+
+# Forma mais básica de usar o R
+
+O R pode ser usado para fazer contas como uma calculadora.
+
+
+```r
+# Código
+2 + 2
+```
+
+```
+## [1] 4
+```
+
+
+```r
+# Código
+2 ^ 10
+```
+
+```
+## [1] 1024
+```
+
+
+```r
+# Código
+((2 ^ 10) / 8) * 3
+```
+
+```
+## [1] 384
+```
+
+---
+
+# Funções
+
+Assim como no excel, o R também têm funções implementadas. Por exemplo, a função `sum()`.  
+
+Toda função recebe **argumentos** que serão usados para realizar o cálculo desejado.   
+Mas como saber quais argumentos colocar na função ? Ou até qual função usar ?
+
+--
+
+&lt;br /&gt;
+
+### Ajuda no R
+É muito fácil chamar ajuda pelo próprio R.
+
+Quando você quiser encontrar uma função, você pode buscar por alguma palavra-chave
+`help.search("format date")` que o R vai te mostrar possíveis funções que podem te atender. 
+
+Caso você já saiba qual função usar e quer saber os argumentos, basta digitar:   
+`?nome_da_funcao`
+
+---
+## Buscando pela palavra-chave
+
+
+```r
+help.search("format date")
+```
+
+.center[![:scale 70%](./Imagens/format_date_example.png)]
+
+---
+## Buscando pela função
+
+
+```r
+?as.Date
+```
+
+.center[![:scale 60%](./Imagens/asDate_example.png)]
+
+---
+# Objetos do R
+
+**1. Vetores**: uma sequência de valores numéricos ou caracteres
+
+--
+
+**2. Matrizes**: coleção de vetores em linhas e colunas, em que todos os vetores tem o mesmo tipo (numério ou caracteres)
+
+--
+
+**3. Dataframe**: é o mesmo que uma matriz mas podemos ter tipos diferentes.   
+Esse é o objeto que normalmente armazenamos os nossos dados. 
+
+--
+
+**4. Listas**: conjunto de vetores, dataframes ou matrizes. Não precisam ter o mesmo comprimento.  
+A maior parte das funções retorna os resultados em listas. 
+
+--
+
+**5. Funções**: ferramentas que podemos usar para fazer os cálculos desejados.
+
+---
+class: title-slide, middle
+
+## VETORES
+
+---
+## 1. Vetores
+
+Para criar um vetor no R, basta criar um objeto usando 'c' (concatenar), e colocar os valores do vetor entre parênteses. O código abaixo cria vetor **familia** que contém os nomes dos integrantes da minha família como valores.
+
+--
+
+
+```r
+familia &lt;- c("Cleide", "Elaine", "Rafael", "Letícia", "Amora", "Nutella")
+```
+
+--
+
+Para acessar algum valor do vetor, basta chamar a posição que esse valor ocupa no vetor entre [].
+
+--
+
+
+```r
+familia[4]
+```
+
+```
+## [1] "Letícia"
+```
+
+--
+
+Também é possível usar funções nos vetores.
+
+--
+
+
+```r
+idades_familia &lt;- c(78, 53, 28, 27, 2, 2)
+mean(idades_familia)
+```
+
+```
+## [1] 31.66667
+```
+
+---
+class: title-slide, middle
+
+## MATRIZES
+
+---
+## 2. Matrizes
+
+Matriz são coleções de vetores, então para criar uma matriz, podemos juntar os dois vetores criados no slide anterior. Para isso, usaremos a função `cbind()` (_column bind_).
+
+--
+
+
+```r
+matriz_familia &lt;- cbind(familia, idades_familia)
+matriz_familia
+```
+
+```
+##      familia   idades_familia
+## [1,] "Cleide"  "78"          
+## [2,] "Elaine"  "53"          
+## [3,] "Rafael"  "28"          
+## [4,] "Letícia" "27"          
+## [5,] "Amora"   "2"           
+## [6,] "Nutella" "2"
+```
+
+--
+
+Assim como nos vetores, podemos acessar um valor da matriz usando as posições do objeto. Porém na matriz precisamos passar a linha e a coluna que queremos selecionar. 
+
+.center[**M&lt;sub&gt;_linha, coluna_&lt;/sub&gt;**]
+
+---
+## 2. Matrizes
+
+1- Se quisermos ver a idade da Amora:
+
+```r
+# Linha 5, Coluna 2
+matriz_familia[5,2]
+```
+
+```
+## idades_familia 
+##            "2"
+```
+
+--
+
+2- E se quisermos ver as duas colunas? Nome e idade?
+
+```r
+# Linha 5, Colunas 1 e 2
+matriz_familia[5,c(1,2)]
+```
+
+```
+##        familia idades_familia 
+##        "Amora"            "2"
+```
+
+---
+## 2. Matrizes
+
+3- Para ver **todas** as colunas ou todas linhas, você pode omitir o número das linhas ou colunas. O código anterior poderia ser escrito da seguinte forma: 
+
+```r
+# Linha 4, Todas as colunas
+matriz_familia[4,]
+```
+
+```
+##        familia idades_familia 
+##      "Letícia"           "27"
+```
+
+--
+
+
+```r
+# Coluna 1, Todas as linhas
+matriz_familia[,1]
+```
+
+```
+## [1] "Cleide"  "Elaine"  "Rafael"  "Letícia" "Amora"   "Nutella"
+```
+
+---
+## 2. Matrizes
+
+Também podemos fazer operações com matrizes.
+
+1- Vamos pegar o máximo dos nossos nomes. 
+
+```r
+# Máximo da Coluna 1, todas as Linhas
+max(matriz_familia[,1])
+```
+
+```
+## [1] "Rafael"
+```
+
+--
+
+2- Vamos pegar a média das nossas idades.
+
+```r
+# Média da Coluna 2, todas as Linhas
+mean(matriz_familia[,2])
+```
+
+```
+## Warning in mean.default(matriz_familia[, 2]): argument is not numeric or
+## logical: returning NA
+```
+
+```
+## [1] NA
+```
+
+--
+
+Como o vetor com nossos nomes é do tipo **caracter**, quando juntamos com o vetor de idade para formar a matriz, o vetor de idades passou a ser **caracter** também, pois matrizes só podem ter um tipo de dado.   
+.center[E é por isso que normalmente trabalhamos com **dataframes**!]
+
+---
+class: title-slide, middle
+
+## DATAFRAMES
+
+---
+## 3. Dataframes
+
+Dataframe é a mesma coisa que uma matriz, mas ele aceita vetores de tipos **diferentes**. Para juntar os dois vetores, dessa vez usaremos a função `data.frame()`. 
+
+```r
+df_familia &lt;- data.frame(familia, idades_familia)
+head(df_familia) # head mostra as primeiras 6 obs. Similar ao LIMIT do SQL
+```
+
+```
+##   familia idades_familia
+## 1  Cleide             78
+## 2  Elaine             53
+## 3  Rafael             28
+## 4 Letícia             27
+## 5   Amora              2
+## 6 Nutella              2
+```
+
+--
+
+É possível manipular os dados pela posição dos objetos, assim como vimos nas matrizes, e também podemos selecionar as colunas de interesse utilizando o símbolo `$`.
+.pull-left[
+
+```r
+df_familia[,2]
+```
+
+```
+## [1] 78 53 28 27  2  2
+```
+]
+.pull-right[
+
+```r
+df_familia$idades_familia
+```
+
+```
+## [1] 78 53 28 27  2  2
+```
+]
+
+--
+
+.center[
+Mas pra trabalhar no R, tem sempre que digitar os dados ? **Não!**
+]
+
+---
+class: title-slide, middle
+
+## IMPORTANDO DADOS PARA O R
+
+---
+# Importando dados 
+
+Pode-se entrar com dados no R de diferentes origens. Por exemplo:
+
+**1. txt**: arquivos texto usando a função `read.table()`
+
+**2. csv**: arquivos csv usando a função `read.table()` ou `read.csv2()`
+
+**3. xlsx**: arquivos excel usando a função `read_excel()` do pacote **readxl**
+
+**4. BigQuery**: dados do BQ usando a função `bq_table_download()` do pacote **bigrquery**
+
+.center[![:scale 60%](./Imagens/import_data_example.png)]
+
+---
+# dplyr
+
+O **dplyr** é um dos melhores pacotes do R para manipulação de dados.   
+Ele fornece um conjunto de verbos que ajudam a resolver os desafios mais comuns da manipulação de dados:
+
+- **mutate**: para adicionar novas variáveis que são função de variáveis existentes
+- **select**: selecionar apenas as variáveis de interesse
+- **filter**: filtrar os casos que se encaixam em determinada condição
+- **group_by**: agrupar os dados por determinadas variáveis
+- **summarise**: sumariza vários valores a uma medida resumo
+- **arrange**: muda a ordem das linhas
+
+
+.center[![:scale 90%](./Imagens/rthen_rnow.png)]  
+.caption[
+Ilustração de Allison Horst
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="./macro/macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightLines": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
