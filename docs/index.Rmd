@@ -10,6 +10,10 @@ output:
       highlightLines: true
 ---
 
+```{r include=FALSE}
+library(dplyr)
+```
+
 # O que é o R?
 
 - O R é uma linguagem de programação e também um software livre
@@ -302,4 +306,101 @@ Ele fornece um conjunto de verbos que ajudam a resolver os desafios mais comuns 
 .center[![:scale 90%](./Imagens/rthen_rnow.png)]  
 .caption[Ilustração de Allison Horst]
 
+---
+class: inverse, middle
+# Estatística Básica
+
+---
+# Estatística Básica 
+
+Para sabermos qual técnica estatística utilizar, e como interpretar os resultados, precisamos entender com que tipo de dado estamos lidando.
+
+###  Tipos de Variáveis
+### Quantitativas 
+São as variáveis representadas por números (uma contagem, uma medida):
+- **Discretas**: valores representam um conjunto finito ou enumerável. Ex: quantidade de filhos. 
+- **Contínuas**: valores pertencem a um intervalo de números reais. Ex: peso das pessoas. 
+
+### Qualitativas
+São as variáveis que representam uma qualidade ou atributo, e são definidas por diversas categorias. 
+- **Nominal**: quando não existe uma ordenação. Ex: sexo, cor do cabelo. 
+- **Ordinal**: quando existe uma ordenação. Ex: escolaridade. 
+
+---
+# Análise Descritiva
+As estatísticas descritivas são números ou medidas que têm como objetivo descrever o nosso conjunto de dados. 
+
+### Medidas de Posição
+Valor ao redor do qual os dados se distribuem.
+- **Média**: média dos dados. É mais sensível aos valores da amostra, então é adequada a situações que os dados são distriuídos de forma mais uniforme. 
+- **Mediana**: valor central do conjunto de dados.
+- **Moda**: representa o valor mais frequente do conjunto de dados.
+
+### Medidas de Dispersão
+Medidas que indicam a variabilidade dos dados
+- **Amplitude**: valor máximo menos o valor mínimo
+- **Variância**: valor que representa o afastamento que os dados têm da média
+- **Desvio Padrão**: é a raiz quadrada da variância
+
+---
+# Análise Descritiva
+
+Para todas as variáveis quantitativas do nosso conjunto de dados, podemos olhar as medidas de posição usando a função `summary()`.
+```{r echo=TRUE, fig.height = 3.7, fig.width = 3.7, fig.align='center'}
+vetor_exemplo <- rnorm(n = 10000, mean = 0, sd = 1)
+print(summary(vetor_exemplo))
+
+hist(vetor_exemplo)
+```
+
+---
+
+Também podemos olhar essas medidas, considerando uma variável categórica. Usando os verbos do pacote **dplyr**.
+```{r}
+# Gera um vetor aleatório com A,B,C
+categorias_exemplo <- sample(LETTERS[1:3], 10000, replace=TRUE, prob=c(0.35, 0.25, 0.40))
+df <- data.frame(vetor_exemplo, categorias_exemplo)
+
+df %>% 
+  dplyr::group_by(categorias_exemplo) %>% 
+  dplyr::summarize(min = min(vetor_exemplo),
+                   quartil_1 = quantile(vetor_exemplo, .25),
+                   mediana = median(vetor_exemplo),
+                   media = mean(vetor_exemplo),
+                   quartil_3 = quantile(vetor_exemplo, .75),
+                   max = max(vetor_exemplo)
+  )
+```
+
+---
+# Correlação
+
+Correlação é o termo usado para determinar a relação de dois eventos. Em estatística, indica a força e direção do relacionamento **linear** entre duas ou mais variáveis. 
+
+```{r}
+# Gera um vetor aleatório com A,B,C
+vetor_exemplo2 <- rnorm(n = 10000, mean = 3, sd = 7)
+vetor_exemplo3 <- rnorm(n = 10000, mean = 10, sd = 13)
+df <- data.frame(vetor_exemplo, vetor_exemplo2, vetor_exemplo3, categorias_exemplo)
+
+cor(df %>% 
+      select(vetor_exemplo, vetor_exemplo2, vetor_exemplo3))
+
+```
+
+
+
+---
+## Variáveis Qualitativas
+
+Para as variáveis qualitativas, durante a análise descritiva, normalmente usamos **tabelas de frequência** e **gráficos de barras** para conhecer essas variáveis. 
+
+```{r echo=TRUE}
+# Tabela de Frequência
+table(df$categorias_exemplo)
+```
+```{r echo=TRUE, fig.height = 3.7, fig.width = 3.7}
+# Gráfico de Barras 
+barplot(table(df$categorias_exemplo))
+```
 

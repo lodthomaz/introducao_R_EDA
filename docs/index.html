@@ -19,6 +19,8 @@ class: center, middle, inverse, title-slide
 ---
 
 
+
+
 # O que é o R?
 
 - O R é uma linguagem de programação e também um software livre
@@ -408,6 +410,145 @@ Ele fornece um conjunto de verbos que ajudam a resolver os desafios mais comuns 
 
 .center[![:scale 90%](./Imagens/rthen_rnow.png)]  
 .caption[Ilustração de Allison Horst]
+
+---
+class: inverse, middle
+# Estatística Básica
+
+---
+# Estatística Básica 
+
+Para sabermos qual técnica estatística utilizar, e como interpretar os resultados, precisamos entender com que tipo de dado estamos lidando.
+
+###  Tipos de Variáveis
+### Quantitativas 
+São as variáveis representadas por números (uma contagem, uma medida):
+- **Discretas**: valores representam um conjunto finito ou enumerável. Ex: quantidade de filhos. 
+- **Contínuas**: valores pertencem a um intervalo de números reais. Ex: peso das pessoas. 
+
+### Qualitativas
+São as variáveis que representam uma qualidade ou atributo, e são definidas por diversas categorias. 
+- **Nominal**: quando não existe uma ordenação. Ex: sexo, cor do cabelo. 
+- **Ordinal**: quando existe uma ordenação. Ex: escolaridade. 
+
+---
+# Análise Descritiva
+As estatísticas descritivas são números ou medidas que têm como objetivo descrever o nosso conjunto de dados. 
+
+### Medidas de Posição
+Valor ao redor do qual os dados se distribuem.
+- **Média**: média dos dados. É mais sensível aos valores da amostra, então é adequada a situações que os dados são distriuídos de forma mais uniforme. 
+- **Mediana**: valor central do conjunto de dados.
+- **Moda**: representa o valor mais frequente do conjunto de dados.
+
+### Medidas de Dispersão
+Medidas que indicam a variabilidade dos dados
+- **Amplitude**: valor máximo menos o valor mínimo
+- **Variância**: valor que representa o afastamento que os dados têm da média
+- **Desvio Padrão**: é a raiz quadrada da variância
+
+---
+# Análise Descritiva
+
+Para todas as variáveis quantitativas do nosso conjunto de dados, podemos olhar as medidas de posição usando a função `summary()`.
+
+```r
+vetor_exemplo &lt;- rnorm(n = 10000, mean = 0, sd = 1)
+print(summary(vetor_exemplo))
+```
+
+```
+##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+## -3.765401 -0.677709 -0.006745 -0.006151  0.671964  3.424514
+```
+
+```r
+hist(vetor_exemplo)
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+Também podemos olhar essas medidas, considerando uma variável categórica. Usando os verbos do pacote **dplyr**.
+
+```r
+# Gera um vetor aleatório com A,B,C
+categorias_exemplo &lt;- sample(LETTERS[1:3], 10000, replace=TRUE, prob=c(0.35, 0.25, 0.40))
+df &lt;- data.frame(vetor_exemplo, categorias_exemplo)
+
+df %&gt;% 
+  dplyr::group_by(categorias_exemplo) %&gt;% 
+  dplyr::summarize(min = min(vetor_exemplo),
+                   quartil_1 = quantile(vetor_exemplo, .25),
+                   mediana = median(vetor_exemplo),
+                   media = mean(vetor_exemplo),
+                   quartil_3 = quantile(vetor_exemplo, .75),
+                   max = max(vetor_exemplo)
+  )
+```
+
+```
+## `summarise()` ungrouping output (override with `.groups` argument)
+```
+
+```
+## # A tibble: 3 x 7
+##   categorias_exemplo   min quartil_1 mediana    media quartil_3   max
+##   &lt;fct&gt;              &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
+## 1 A                  -3.40    -0.690 -0.0148 -0.00708     0.701  3.42
+## 2 B                  -3.77    -0.712 -0.0387 -0.0480      0.631  3.05
+## 3 C                  -3.60    -0.645  0.0117  0.0207      0.674  3.39
+```
+
+---
+# Correlação
+
+Correlação é o termo usado para determinar a relação de dois eventos. Em estatística, indica a força e direção do relacionamento **linear** entre duas ou mais variáveis. 
+
+
+```r
+# Gera um vetor aleatório com A,B,C
+vetor_exemplo2 &lt;- rnorm(n = 10000, mean = 3, sd = 7)
+vetor_exemplo3 &lt;- rnorm(n = 10000, mean = 10, sd = 13)
+df &lt;- data.frame(vetor_exemplo, vetor_exemplo2, vetor_exemplo3, categorias_exemplo)
+
+cor(df %&gt;% 
+      select(vetor_exemplo, vetor_exemplo2, vetor_exemplo3))
+```
+
+```
+##                vetor_exemplo vetor_exemplo2 vetor_exemplo3
+## vetor_exemplo    1.000000000   -0.013008241    0.005831647
+## vetor_exemplo2  -0.013008241    1.000000000   -0.001704799
+## vetor_exemplo3   0.005831647   -0.001704799    1.000000000
+```
+
+
+
+---
+## Variáveis Qualitativas
+
+Para as variáveis qualitativas, durante a análise descritiva, normalmente usamos **tabelas de frequência** e **gráficos de barras** para conhecer essas variáveis. 
+
+
+```r
+# Tabela de Frequência
+table(df$categorias_exemplo)
+```
+
+```
+## 
+##    A    B    C 
+## 3410 2531 4059
+```
+
+```r
+# Gráfico de Barras 
+barplot(table(df$categorias_exemplo))
+```
+
+![](index_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
