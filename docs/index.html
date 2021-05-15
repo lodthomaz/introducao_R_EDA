@@ -331,7 +331,7 @@ Dataframe é a mesma coisa que uma matriz, mas ele aceita vetores de tipos **dif
 
 ```r
 df_familia &lt;- data.frame(familia, idades_familia)
-head(df_familia) # head mostra as primeiras 6 obs. Similar ao LIMIT do SQL
+df_familia
 ```
 
 ```
@@ -450,7 +450,8 @@ Medidas que indicam a variabilidade dos dados
 ---
 # Análise Descritiva
 
-Para todas as variáveis quantitativas do nosso conjunto de dados, podemos olhar as medidas de posição usando a função `summary()`.
+Para todas as variáveis quantitativas do nosso conjunto de dados, podemos olhar as medidas de posição usando a função `summary()`. 
+E também podemos fazer um histograma usando a função `hist()`.
 
 ```r
 vetor_exemplo &lt;- rnorm(n = 10000, mean = 0, sd = 1)
@@ -459,7 +460,7 @@ print(summary(vetor_exemplo))
 
 ```
 ##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## -3.765401 -0.677709 -0.006745 -0.006151  0.671964  3.424514
+## -3.576147 -0.673546  0.001530 -0.001283  0.662116  4.065133
 ```
 
 ```r
@@ -496,9 +497,9 @@ df %&gt;%
 ## # A tibble: 3 x 7
 ##   categorias_exemplo   min quartil_1 mediana    media quartil_3   max
 ##   &lt;fct&gt;              &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
-## 1 A                  -3.40    -0.690 -0.0148 -0.00708     0.701  3.42
-## 2 B                  -3.77    -0.712 -0.0387 -0.0480      0.631  3.05
-## 3 C                  -3.60    -0.645  0.0117  0.0207      0.674  3.39
+## 1 A                  -3.58    -0.695 -0.0162 -0.00864     0.680  4.07
+## 2 B                  -3.44    -0.652 -0.0177 -0.0114      0.629  3.41
+## 3 C                  -3.21    -0.666  0.0328  0.0115      0.669  3.27
 ```
 
 ---
@@ -519,9 +520,9 @@ cor(df %&gt;%
 
 ```
 ##                vetor_exemplo vetor_exemplo2 vetor_exemplo3
-## vetor_exemplo    1.000000000   -0.013008241    0.005831647
-## vetor_exemplo2  -0.013008241    1.000000000   -0.001704799
-## vetor_exemplo3   0.005831647   -0.001704799    1.000000000
+## vetor_exemplo    1.000000000   -0.003420966   -0.023843994
+## vetor_exemplo2  -0.003420966    1.000000000   -0.002301528
+## vetor_exemplo3  -0.023843994   -0.002301528    1.000000000
 ```
 
 
@@ -540,7 +541,7 @@ table(df$categorias_exemplo)
 ```
 ## 
 ##    A    B    C 
-## 3410 2531 4059
+## 3498 2500 4002
 ```
 
 ```r
