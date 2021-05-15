@@ -246,7 +246,7 @@ class: title-slide, middle
 Dataframe é a mesma coisa que uma matriz, mas ele aceita vetores de tipos **diferentes**. Para juntar os dois vetores, dessa vez usaremos a função `data.frame()`. 
 ```{r echo=TRUE}
 df_familia <- data.frame(familia, idades_familia)
-head(df_familia) # head mostra as primeiras 6 obs. Similar ao LIMIT do SQL
+df_familia
 ```
 
 --
@@ -345,7 +345,8 @@ Medidas que indicam a variabilidade dos dados
 ---
 # Análise Descritiva
 
-Para todas as variáveis quantitativas do nosso conjunto de dados, podemos olhar as medidas de posição usando a função `summary()`.
+Para todas as variáveis quantitativas do nosso conjunto de dados, podemos olhar as medidas de posição usando a função `summary()`. 
+E também podemos fazer um histograma usando a função `hist()`.
 ```{r echo=TRUE, fig.height = 3.7, fig.width = 3.7, fig.align='center'}
 vetor_exemplo <- rnorm(n = 10000, mean = 0, sd = 1)
 print(summary(vetor_exemplo))
